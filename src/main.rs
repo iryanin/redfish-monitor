@@ -22,9 +22,11 @@ use tokio::{sync::RwLock, time::sleep};
 struct SensorReading {
     psu_pin: Option<u64>,
     cpu_power: Option<u64>,
+    cpu0_power: Option<u64>,
+    cpu1_power: Option<u64>,
+    fan_power: Option<u64>,
     cpu0_temp: Option<u64>,
     cpu1_temp: Option<u64>,
-    fan_power: Option<u64>,
 }
 
 #[tokio::main]
@@ -102,6 +104,8 @@ async fn update_readings(
                     let mut reading = SensorReading {
                         psu_pin: None,
                         cpu_power: None,
+                        cpu0_power: None,
+                        cpu1_power: None,
                         cpu0_temp: None,
                         cpu1_temp: None,
                         fan_power: None,
@@ -113,6 +117,8 @@ async fn update_readings(
                         match name {
                             "PSU1_PIN" => reading.psu_pin = value,
                             "CPU_Power" => reading.cpu_power = value,
+                            "CPU0_Power" => reading.cpu0_power = value,
+                            "CPU1_Power" => reading.cpu1_power = value,
                             "CPU0_Temp" => reading.cpu0_temp = value,
                             "CPU1_Temp" => reading.cpu1_temp = value,
                             "Fan_Power" => reading.fan_power = value,
@@ -156,9 +162,11 @@ async fn start_ui(
                 let reading = data.get(ip);
                 let text = match reading {
                     Some(r) => format!(
-                        " PSU_PIN: {} W\n CPU: {} W | Fan: {} W\n Temp0: {} °C | Temp1: {} °C",
+                        " PSU_PIN: {} W \t\t CPU: {} W  \t\t CPU0: {} W | CPU1: {} W \n Fan: {} W \t\t CPU Temp0: {} °C | CPU Temp1: {} °C",
                         r.psu_pin.unwrap_or(0),
                         r.cpu_power.unwrap_or(0),
+                        r.cpu0_power.unwrap_or(0),
+                        r.cpu1_power.unwrap_or(0),
                         r.fan_power.unwrap_or(0),
                         r.cpu0_temp.unwrap_or(0),
                         r.cpu1_temp.unwrap_or(0),
