@@ -162,7 +162,7 @@ async fn start_ui(
                 let reading = data.get(ip);
                 let text = match reading {
                     Some(r) => format!(
-                        " PSU_PIN: {} W | CPU Tot: {} W  \t\t CPU 0: {} W | CPU 1: {} W \n Fan: {} W | CPU 0 Temp: {} °C | CPU 1 Temp: {} °C",
+                        " PSU_PIN: {} W | CPU Tot: {} W  \t\t CPU 0: {} W | CPU 1: {} W \n Fan: {} W \t\t CPU 0 Temp: {} °C | CPU 1 Temp: {} °C",
                         r.psu_pin.unwrap_or(0),
                         r.cpu_power.unwrap_or(0),
                         r.cpu0_power.unwrap_or(0),
